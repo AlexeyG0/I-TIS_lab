@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .location {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+        .sensor {
+            margin-left: 20px;
+        }
+        .measurement {
+            margin-left: 40px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Данные по локациям</h1>
+    </div>
+    <div class="content">
+        {% for data in location_data %}
+            <div class="location">
+                <h2>{{ data.location.name }}</h2>
+                <p>{{ data.location.description }}</p>
+                <p><strong>Coordinates:</strong> {{ data.location.coordinates }}</p>
+                {% for sensor_data in data.sensors_with_measurements %}
+                    <div class="sensor">
+                        <p><strong>Sensor:</strong> {{ sensor_data.sensor.type_sensor }}</p>
+                        {% if sensor_data.latest_measurement %}
+                            <div class="measurement">
+                                <p><strong>Latest Measurement:</strong> {{ sensor_data.latest_measurement.value }}</p>
+                                <p><strong>Timestamp:</strong> {{ sensor_data.latest_measurement.timestamp }}</p>
+                            </div>
+                        {% else %}
+                            <p class="measurement">No measurements available.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
